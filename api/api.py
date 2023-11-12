@@ -38,6 +38,11 @@ async def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
 
+@router.get("/image-form", response_class=HTMLResponse)
+async def image_form(request: Request):
+    return templates.TemplateResponse("generateImg.html", {"request": request})
+
+
 @router.get("/sticker-form", response_class=HTMLResponse)
 async def sticker_form(request: Request):
     return templates.TemplateResponse("generateStk.html", {"request": request})
@@ -46,6 +51,7 @@ async def sticker_form(request: Request):
 # ------------------------------------------------- api routes
 @router.post("/generat-image")
 async def generate_image(
+    request: Request,
     prompt: str = Form(...),
     db: AsyncSession = Depends(get_session),
 ) -> Any:
@@ -53,8 +59,11 @@ async def generate_image(
     res: Response = await query.get_image()
     image = io.BytesIO(res.content)
     await query.save_image(image)
-    await query.save_to_db(db)
-    return StreamingResponse(image, media_type=res.headers["content-type"])
+    id: Column[int] = await query.save_to_db(db)
+    image: Images = await get_single_image_from_db(id, db)
+    return templates.TemplateResponse(
+        "singleImage.html", {"request": request, "image": image}
+    )
 
 
 @router.get("/images", response_model=list[Image])

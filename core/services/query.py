@@ -78,6 +78,7 @@ class Query:
             db.add(add)
             await db.commit()
             await db.refresh(add)
+            return add.id
         except Exception as error:
             raise HTTPException(
                 status_code=400, detail="Couldn't save the image to database"
