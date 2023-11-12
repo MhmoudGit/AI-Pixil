@@ -1,15 +1,12 @@
 {% for image in images[:8] %}
-<div
-	class="gap-2 flex flex-col border-2 border-black justify-center items-center text-center"
->
+<div class="">
 	<img
-		src="{{ image.image }}"
-		width="300"
-		class="w-23 rounded-md md:w-24"
+		width="80"
+		height="80"
 		alt="image"
+		class="w-full rounded-3xl"
+		src="{{ image.image }}"
 	/>
-	<p class="text-slate-950 text-xs truncate overflow-hidden max-h-1">
-		{{ image.prompt}}
-	</p>
+	<p class="text-center text-xs">{{ image.prompt }}</p>
 </div>
 {% endfor %}
