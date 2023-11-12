@@ -5,7 +5,6 @@ from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from httpx import AsyncClient, ReadTimeout
 import uuid
-
 from core.models.images import Images
 
 
@@ -86,9 +85,24 @@ class Query:
 
 
 async def get_all_images_from_db(db: AsyncSession) -> Sequence[Images]:
+    """
+    Get images data from the database and return a list
+    """
     try:
         q: Result[Tuple[Images]] = await db.execute(select(Images))
         data: Sequence[Images] = q.scalars().all()
         return data
     except Exception as error:
         raise HTTPException(status_code=404, detail="No Images Found") from error
+
+
+async def get_single_image_from_db(id: int, db: AsyncSession) -> Images:
+    """
+    Get image data from the database and return
+    """
+    try:
+        q: Result[Tuple[Images]] = await db.execute(select(Images).filter_by(id=id))
+        data: Images | None = q.scalars().first()
+        return data
+    except Exception as error:
+        raise HTTPException(status_code=404, detail="No Image Found") from error
