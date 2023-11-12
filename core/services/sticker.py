@@ -18,6 +18,7 @@ async def create_sticker(
     """
 
     # Read the content of the uploaded file
+    random_uuid: Any = uuid.uuid4()
     if for_humans:
         model_name = "u2net_human_seg"
         session = new_session(model_name)
@@ -29,8 +30,8 @@ async def create_sticker(
         session=session if for_humans else None,
     )
     with Image.open(BytesIO(output_data)) as output_sticker:
-        output_sticker.save(f"./static/stickers/{name}.png")
-    return f"./static/stickers/{name}.png"
+        output_sticker.save(f"./static/stickers/{name}-{random_uuid}.png")
+    return f"./static/stickers/{name}-{random_uuid}.png"
 
 
 async def save_sticker_to_db(path: str, name: str, db: AsyncSession) -> Column[int]:

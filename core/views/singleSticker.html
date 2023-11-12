@@ -1,12 +1,14 @@
-<div class="">
+<div class="flex flex-col justify-center">
 	<div class="">
 		<img
-			width="80"
-			height="80"
+			width="200"
+			height="200"
 			alt="image"
-			class="w-full rounded-3xl"
+			class="border-2 rounded-3xl"
 			src="{{ sticker.sticker }}"
 		/>
-		<p class="text-center text-sm">{{ sticker.name.split("-")[0] }}</p>
+		<p class="text-center text-sm text-slate-950">
+			{{ sticker.name.split("-")[0] }}
+		</p>
 	</div>
 </div>

@@ -1,8 +1,6 @@
-<div
-	class="flex flex-col md:flex-row w-screen h-screen justify-center gap-4 p-10"
->
+<div class="flex flex-col md:flex-row justify-around w-full h-full">
 	<form
-		class=""
+		class="flex flex-col gap-4 p-2"
 		id="stickerForm"
 		hx-post="/generate_sticker"
 		hx-target="#result"
@@ -14,7 +12,7 @@
 			type="file"
 			id="image"
 			name="image"
-			class="w-52 bg-slate-300"
+			class="w-full bg-slate-400 text-slate-950 rounded-md"
 			required
 		/>
 
@@ -23,25 +21,43 @@
 			type="text"
 			id="sticker_name"
 			name="sticker_name"
-			class="bg-slate-950 outline-none border-none focus:outline-none"
+			class="bg-slate-950 outline-none border-b border-slate-400 p-2 focus:outline-none"
 			required
 		/>
 
-		<label for="human">Check this box if you upload human image:</label>
-		<input
-			type="checkbox"
-			id="for_humans"
-			name="for_humans"
-			value="true"
-			checked
-		/>
+		<div class="flex gap-4">
+			<div class="flex items-center h-10">
+				<input
+					id="helper-checkbox"
+					aria-describedby="helper-checkbox-text"
+					type="checkbox"
+					value="true"
+					name="for_humans"
+					class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+					checked
+				/>
+			</div>
+			<div class="ms-2 text-sm">
+				<label
+					for="helper-checkbox"
+					class="text-xs font-normal text-gray-500 dark:text-gray-300"
+					>Humans</label
+				>
+				<p
+					id="helper-checkbox-text"
+					class="text-xs font-normal text-gray-500 dark:text-gray-300"
+				>
+					Check this box for human images
+				</p>
+			</div>
+		</div>
 
-		<button type="submit" class="bg-slate-white text-black p-4">
+		<button type="submit" class="bg-slate-400 text-slate-950 p-4 rounded-md">
 			Create Sticker
 		</button>
 	</form>
 
-	<div class="w-full flex justify-center items-center">
-		<div id="result" class="bg-white rounded-md p-10"></div>
+	<div class="flex justify-center items-center">
+		<div id="result" class="bg-white rounded-md p-5"></div>
 	</div>
 </div>
