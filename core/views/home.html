@@ -1,3 +1,64 @@
-<body>
-	<h1>Hello, homeeee!</h1>
-</body>
+<div class="flex flex-col justify-center items-center gap-10 flex-wrap">
+	<!-- header -->
+	<div
+		class="flex flex-col gap-2 justify-center items-center text-center py-10"
+	>
+		<h1 class="text-4xl">Unleash Your Creativity with Pixil-AI</h1>
+		<p class="text-base">Crafting Pixel Art and Stickers Like Never Before</p>
+	</div>
+
+	<!-- paragraph -->
+	<div class="flex flex-col md:flex-row gap-10 w-full">
+		<div class="w-full flex flex-col justify-start text-left p-10 gap-3">
+			<p>
+				<span class="text-4xl font-bold">W</span>elcome to
+				<span class="text-4xl font-bold">P</span>ixil-AI –---
+			</p>
+			<p>
+				Your Ultimate Pixel Art and Sticker Creation SaaS! Are you ready to dive
+				into the world of pixel art and stickers, where creativity knows no
+				bounds?
+			</p>
+			<p>
+				Unleash the power of artificial intelligence to revolutionize your pixel
+				art and sticker creation process. ArtGen Pro combines cutting-edge GAN
+				(Generative Adversarial Network) technology with a user-friendly
+				interface, allowing you to craft pixel-perfect masterpieces effortlessly
+			</p>
+			<p>
+				Whether you're a seasoned pixel artist or just starting your creative
+				journey, our powerful SaaS platform is designed to cater to all skill
+				levels.
+			</p>
+		</div>
+		<div class="w-full flex flex-col justify-center items-center">
+			<img src="/static//images/home.gif" width="500" alt="Animated GIF" />
+		</div>
+	</div>
+
+	<!-- showcase  -->
+	<h2
+		class="text-4xl pt-24"
+		hx-get="/images"
+		hx-trigger="load"
+		hx-target="#showcase"
+	>
+		Showcase
+	</h2>
+	<div
+		id="showcase"
+		class="w-full grid grid-cols-4 gap-4 text-center p-4 md:p-10"
+	></div>
+	<h2
+		class="text-4xl pt-24"
+		hx-get="/stickers"
+		hx-trigger="load"
+		hx-target="#stickers"
+	>
+		Stickers
+	</h2>
+	<div
+		id="stickers"
+		class="w-full grid grid-cols-4 gap-4 text-center p-4 md:p-10"
+	></div>
+</div>

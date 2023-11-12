@@ -51,10 +51,13 @@ async def generate_image(
 
 @router.get("/images", response_model=list[Image])
 async def images(
+    request: Request,
     db: AsyncSession = Depends(get_session),
 ) -> Any:
     images_list: Sequence[Images] = await get_all_images_from_db(db)
-    return images_list
+    return templates.TemplateResponse(
+        "images.html", {"request": request, "images": images_list}
+    )
 
 
 @router.get("/image", response_model=Image)
@@ -80,10 +83,13 @@ async def generate_sticker(
 
 @router.get("/stickers", response_model=list[Sticker])
 async def stickers(
+    request: Request,
     db: AsyncSession = Depends(get_session),
 ) -> Any:
     stickers_list: Sequence[Stickers] = await get_all_stickers_from_db(db)
-    return stickers_list
+    return templates.TemplateResponse(
+        "stickers.html", {"request": request, "stickers": stickers_list}
+    )
 
 
 @router.get("/sticker", response_model=Sticker)
