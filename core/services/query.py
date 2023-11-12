@@ -1,5 +1,7 @@
 from io import BytesIO
+from typing import Sequence, Tuple
 from fastapi import HTTPException, Response
+from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from httpx import AsyncClient, ReadTimeout
 import uuid
@@ -69,7 +71,10 @@ class Query:
         will include the image path and the prompt.
         """
         try:
-            data: dict[str, str] = {"image": self.path, "prompt": self.prompt}
+            data: dict[str, str] = {
+                "image": self.path.lstrip("."),
+                "prompt": self.prompt,
+            }
             add = Images(**data)
             db.add(add)
             await db.commit()
@@ -78,3 +83,12 @@ class Query:
             raise HTTPException(
                 status_code=400, detail="Couldn't save the image to database"
             ) from error
+
+
+async def get_all_images_from_db(db: AsyncSession) -> Sequence[Images]:
+    try:
+        q: Result[Tuple[Images]] = await db.execute(select(Images))
+        data: Sequence[Images] = q.scalars().all()
+        return data
+    except Exception as error:
+        raise HTTPException(status_code=404, detail="No Images Found") from error
