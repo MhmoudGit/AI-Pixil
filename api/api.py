@@ -1,7 +1,8 @@
 import io
 from typing import Any, Sequence
 from fastapi import APIRouter, Depends, File, Form, Request, Response, UploadFile
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse
+from pydantic import EmailStr
 from sqlalchemy import Column
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_session
@@ -9,6 +10,8 @@ from core.models.images import Images
 from core.models.stickers import Stickers
 from core.schemas.images import Image
 from core.schemas.stickers import Sticker
+from core.services.counter import count_views
+from core.services.email import email_create
 from core.services.query import Query, get_all_images_from_db, get_single_image_from_db
 from core.services.sticker import (
     create_sticker,
@@ -120,3 +123,30 @@ async def sticker(
 ) -> Any:
     sticker: Stickers = await get_single_sticker_from_db(id, db)
     return sticker
+
+
+@router.post("/send_email", response_class=HTMLResponse)
+async def post_email(
+    email: EmailStr = Form(...),
+    db: AsyncSession = Depends(get_session),
+):
+    try:
+        await email_create(email, db)
+        html_content = """<p> Email Sent successfully </p>"""
+        return HTMLResponse(content=html_content, status_code=200)
+    except Exception:
+        html_content = """<p> Already subscribed </p>"""
+        return HTMLResponse(content=html_content, status_code=200)
+
+
+@router.post("/counter", response_class=HTMLResponse)
+async def count(
+    db: AsyncSession = Depends(get_session),
+):
+    try:
+        num = await count_views(db)
+        html_content = f"""<p> ---viewers: {num} </p>"""
+        return HTMLResponse(content=html_content, status_code=200)
+    except Exception:
+        html_content = """<p> ---viewers: --  </p>"""
+        return HTMLResponse(content=html_content, status_code=200)

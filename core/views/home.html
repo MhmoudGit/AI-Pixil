@@ -82,6 +82,7 @@
 		<form
 			hx-post="/send_email"
 			hx-trigger="submit"
+			hx-target="#msg"
 			class="p-4 flex gap-4 justify-center items-center px-10 border border-slate-400 rounded-md"
 		>
 			<label for="email">Email:</label>
@@ -96,5 +97,6 @@
 				subscribe
 			</button>
 		</form>
+		<span class="msg" id="msg"></span>
 	</div>
 </div>

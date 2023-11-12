@@ -15,7 +15,7 @@
 			sizes="64x64"
 			type="image/png"
 		/>
-		<title>AI Pixil</title>
+		<title>Pixil-AI</title>
 	</head>
 	<body
 		class="font-mono md:text-lg font-semibold text-white bg-slate-950 select-none"
@@ -36,6 +36,9 @@
 						<span class="text-xs bg-white text-black md:ml-2 px-1 rounded-md"
 							>Beta</span
 						>
+						<p hx-post="/counter" hx-trigger="load" hx-target="#views">
+							<span id="views"></span>
+						</p>
 					</div>
 				</div>
 				<div
@@ -61,9 +64,7 @@
 			</nav>
 		</header>
 		<div id="container" class="mt-14"></div>
-		<p
-			class="absolute bottom-0 left-0 w-full bg-slate-400 text-center text-slate-950 text-sm p-1"
-		>
+		<p class="w-full bg-slate-400 text-center text-slate-950 text-sm p-1">
 			©<a href="https://github.com/MhmoudGit">Mahmoud Ahmed</a>. All rigths
 			reserved
 		</p>
