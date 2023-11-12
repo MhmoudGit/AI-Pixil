@@ -2,7 +2,7 @@ from typing import Any, Sequence, Tuple
 from fastapi import HTTPException, UploadFile
 from rembg import remove, new_session
 from io import BytesIO
-from sqlalchemy import Result, select
+from sqlalchemy import Column, Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.models.stickers import Stickers
 from PIL import Image
@@ -33,7 +33,7 @@ async def create_sticker(
     return f"./static/stickers/{name}.png"
 
 
-async def save_sticker_to_db(path: str, name: str, db: AsyncSession) -> None:
+async def save_sticker_to_db(path: str, name: str, db: AsyncSession) -> Column[int]:
     """
     Saving the sticker to the database.
 
@@ -49,6 +49,7 @@ async def save_sticker_to_db(path: str, name: str, db: AsyncSession) -> None:
         db.add(add)
         await db.commit()
         await db.refresh(add)
+        return add.id
     except Exception as error:
         raise HTTPException(
             status_code=400, detail="Couldn't save sticker to database"

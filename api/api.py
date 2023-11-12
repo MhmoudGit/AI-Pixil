@@ -2,6 +2,7 @@ import io
 from typing import Any, Sequence
 from fastapi import APIRouter, Depends, File, Form, Request, Response, UploadFile
 from fastapi.responses import HTMLResponse, StreamingResponse
+from sqlalchemy import Column
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_session
 from core.models.images import Images
@@ -26,6 +27,7 @@ router = APIRouter(
 )
 
 
+# ----------------------------------------------- view routes
 @router.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -36,6 +38,12 @@ async def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
 
+@router.get("/sticker-form", response_class=HTMLResponse)
+async def sticker_form(request: Request):
+    return templates.TemplateResponse("generateStk.html", {"request": request})
+
+
+# ------------------------------------------------- api routes
 @router.post("/generat-image")
 async def generate_image(
     prompt: str = Form(...),
@@ -71,14 +79,18 @@ async def image(
 
 @router.post("/generate_sticker")
 async def generate_sticker(
+    request: Request,
     image: UploadFile = File(...),
     sticker_name: str = Form(...),
-    for_humans: bool = Form(...),
+    for_humans: bool = Form(False),
     db: AsyncSession = Depends(get_session),
 ) -> Any:
     saved_at: str = await create_sticker(image, sticker_name, for_humans)
-    await save_sticker_to_db(saved_at, sticker_name, db)
-    return {"message": "success"}
+    id: Column[int] = await save_sticker_to_db(saved_at, sticker_name, db)
+    sticker: Stickers = await get_single_sticker_from_db(id, db)
+    return templates.TemplateResponse(
+        "singleSticker.html", {"request": request, "sticker": sticker}
+    )
 
 
 @router.get("/stickers", response_model=list[Sticker])

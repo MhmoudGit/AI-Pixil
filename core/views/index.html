@@ -17,22 +17,26 @@
 		/>
 		<title>AI Pixil</title>
 	</head>
-	<body class="font-mono md:text-lg font-semibold text-white bg-slate-950">
+	<body
+		class="font-mono md:text-lg font-semibold text-white bg-slate-950 select-none"
+	>
 		<header>
 			<nav
 				class="text-xs md:p-2 md:px-5 flex justify-between items-center md:text-lg border-b border-slate-900"
 			>
-				<div
-					class="flex items-center justify-center cursor-pointer"
-					hx-get="/home-page"
-					hx-trigger="load"
-					hx-target="#container"
-				>
-					<img src="/static/stickers/grumpy_dog.png" alt="logo" width="70" />
-					<p>Pixil-AI</p>
-					<span class="text-xs bg-white text-black md:ml-2 px-1 rounded-md"
-						>Beta</span
+				<div hx-get="/home-page" hx-trigger="load" hx-target="#container">
+					<div
+						class="flex items-center justify-center cursor-pointer"
+						hx-get="/home-page"
+						hx-trigger="click"
+						hx-target="#container"
 					>
+						<img src="/static/stickers/grumpy_dog.png" alt="logo" width="70" />
+						<p>Pixil-AI</p>
+						<span class="text-xs bg-white text-black md:ml-2 px-1 rounded-md"
+							>Beta</span
+						>
+					</div>
 				</div>
 				<div
 					class="flex items-center justify-center cursor-pointer gap-3 p-4 md:gap-0 flex-col md:flex-row"
@@ -40,7 +44,12 @@
 					<p class="md:px-4 hover:text-slate-200 cursor-pointer">
 						Generate Image
 					</p>
-					<p class="md:px-4 hover:text-slate-200 cursor-pointer">
+					<p
+						class="md:px-4 hover:text-slate-200 cursor-pointer"
+						hx-get="/sticker-form"
+						hx-trigger="click"
+						hx-target="#container"
+					>
 						Create Sticker
 					</p>
 				</div>
