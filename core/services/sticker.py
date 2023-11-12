@@ -5,6 +5,7 @@ from io import BytesIO
 from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.models.stickers import Stickers
+from PIL import Image
 import uuid
 
 
@@ -17,7 +18,7 @@ async def create_sticker(image: UploadFile, name: str) -> None:
     # Read the content of the uploaded file
     sticker_content: bytes = await image.read()
     output_data: bytes = remove(sticker_content)
-    with image.open(BytesIO(output_data)) as output_sticker:
+    with Image.open(BytesIO(output_data)) as output_sticker:
         output_sticker.save(f"./static/stickers/{name}.png")
     return f"./static/stickers/{name}.png"
 
