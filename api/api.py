@@ -1,7 +1,7 @@
 import io
 from typing import Any, Sequence
-from fastapi import APIRouter, Depends, File, Form, Response, UploadFile
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, Depends, File, Form, Request, Response, UploadFile
+from fastapi.responses import HTMLResponse, StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_session
 from core.models.images import Images
@@ -16,12 +16,24 @@ from core.services.sticker import (
     save_sticker_to_db,
 )
 from core.settings import settings
+from fastapi.templating import Jinja2Templates
 
+templates = Jinja2Templates(directory="./core/views")
 
 router = APIRouter(
     prefix="",
     tags=["AI"],
 )
+
+
+@router.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@router.get("/home-page", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request})
 
 
 @router.post("/generat-image")
@@ -58,9 +70,10 @@ async def image(
 async def generate_sticker(
     image: UploadFile = File(...),
     sticker_name: str = Form(...),
+    for_humans: bool = Form(...),
     db: AsyncSession = Depends(get_session),
 ) -> Any:
-    saved_at: str = await create_sticker(image, sticker_name)
+    saved_at: str = await create_sticker(image, sticker_name, for_humans)
     await save_sticker_to_db(saved_at, sticker_name, db)
     return {"message": "success"}
 

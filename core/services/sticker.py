@@ -1,6 +1,6 @@
 from typing import Any, Sequence, Tuple
 from fastapi import HTTPException, UploadFile
-from rembg import remove
+from rembg import remove, new_session
 from io import BytesIO
 from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,15 +9,25 @@ from PIL import Image
 import uuid
 
 
-async def create_sticker(image: UploadFile, name: str) -> None:
+async def create_sticker(
+    image: UploadFile, name: str, for_humans: bool = False
+) -> None:
     """
     Removing background of the selected sticker and turn it into a png
     to make a sticker out of it.
     """
 
     # Read the content of the uploaded file
+    if for_humans:
+        model_name = "u2net_human_seg"
+        session = new_session(model_name)
     sticker_content: bytes = await image.read()
-    output_data: bytes = remove(sticker_content)
+    output_data: bytes = remove(
+        sticker_content,
+        alpha_matting=True,
+        alpha_matting_erode_size=20 if for_humans else 10,
+        session=session if for_humans else None,
+    )
     with Image.open(BytesIO(output_data)) as output_sticker:
         output_sticker.save(f"./static/stickers/{name}.png")
     return f"./static/stickers/{name}.png"

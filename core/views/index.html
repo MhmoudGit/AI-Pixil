@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script
+			src="https://unpkg.com/htmx.org@1.9.8"
+			integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+			crossorigin="anonymous"
+		></script>
+		<link href="/static/output.css" rel="stylesheet" />
+		<link
+			rel="icon"
+			href="/static/stickers/grumpy_dog.png"
+			sizes="64x64"
+			type="image/png"
+		/>
+		<title>AI Pixil</title>
+	</head>
+	<body class="font-mono md:text-lg font-semibold text-white bg-slate-950">
+		<header>
+			<nav
+				class="text-xs md:p-2 md:px-5 flex justify-between items-center md:text-lg border-b border-slate-900"
+			>
+				<div
+					class="flex items-center justify-center cursor-pointer"
+					hx-get="/home-page"
+					hx-trigger="load"
+					hx-target="#container"
+				>
+					<img src="/static/stickers/grumpy_dog.png" alt="logo" width="70" />
+					<p>Pixil-AI</p>
+				</div>
+				<div
+					class="flex items-center justify-center cursor-pointer gap-2 pr-2 md:gap-0"
+				>
+					<p class="md:px-4 hover:text-slate-200 cursor-pointer">
+						Generate Image
+					</p>
+					<p class="md:px-4 hover:text-slate-200 cursor-pointer">
+						Create Sticker
+					</p>
+				</div>
+			</nav>
+		</header>
+		<div id="container" class="pt-14">
+			<div class="flex flex-col justify-center items-center gap-10">
+				<div class="flex flex-col gap-2 justify-center items-center">
+					<h1 class="text-4xl">Unleash Your Creativity with Pixil-AI</h1>
+					<p class="text-base">
+						Crafting Pixel Art and Stickers Like Never Before
+					</p>
+				</div>
+				<div class="flex gap-10 w-full">
+					<div class="w-full flex flex-col justify-start text-left p-10 gap-3">
+						<p> <span class="text-4xl font-bold">W</span>elcome to <span class="text-4xl font-bold">P</span>ixil-AI –---</p>
+						<p>
+							Your Ultimate Pixel Art and Sticker Creation SaaS! Are you ready
+							to dive into the world of pixel art and stickers, where creativity
+							knows no bounds?
+						</p>
+						<p>
+							Unleash the power of artificial intelligence to revolutionize your
+							pixel art and sticker creation process. ArtGen Pro combines
+							cutting-edge GAN (Generative Adversarial Network) technology with
+							a user-friendly interface, allowing you to craft pixel-perfect
+							masterpieces effortlessly
+						</p>
+						<p>
+							Whether you're a seasoned pixel artist or just starting your
+							creative journey, our powerful SaaS platform is designed to cater
+							to all skill levels.
+						</p>
+					</div>
+					<div
+						class="bg-black w-full flex flex-col justify-center items-center"
+					>
+						Right
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
