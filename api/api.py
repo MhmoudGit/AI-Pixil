@@ -38,17 +38,17 @@ async def root(request: Request):
 
 @router.get("/home-page", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+    return templates.TemplateResponse("templates/home.html", {"request": request})
 
 
 @router.get("/image-form", response_class=HTMLResponse)
 async def image_form(request: Request):
-    return templates.TemplateResponse("generateImg.html", {"request": request})
+    return templates.TemplateResponse("templates/generateImg.html", {"request": request})
 
 
 @router.get("/sticker-form", response_class=HTMLResponse)
 async def sticker_form(request: Request):
-    return templates.TemplateResponse("generateStk.html", {"request": request})
+    return templates.TemplateResponse("templates/generateStk.html", {"request": request})
 
 
 # ------------------------------------------------- api routes
@@ -65,7 +65,7 @@ async def generate_image(
     id: Column[int] = await query.save_to_db(db)
     image: Images = await get_single_image_from_db(id, db)
     return templates.TemplateResponse(
-        "singleImage.html", {"request": request, "image": image}
+        "templates/singleImage.html", {"request": request, "image": image}
     )
 
 
@@ -76,7 +76,7 @@ async def images(
 ) -> Any:
     images_list: Sequence[Images] = await get_all_images_from_db(db)
     return templates.TemplateResponse(
-        "images.html", {"request": request, "images": images_list}
+        "templates/images.html", {"request": request, "images": images_list}
     )
 
 
@@ -101,7 +101,7 @@ async def generate_sticker(
     id: Column[int] = await save_sticker_to_db(saved_at, sticker_name, db)
     sticker: Stickers = await get_single_sticker_from_db(id, db)
     return templates.TemplateResponse(
-        "singleSticker.html", {"request": request, "sticker": sticker}
+        "templates/singleSticker.html", {"request": request, "sticker": sticker}
     )
 
 
@@ -112,7 +112,7 @@ async def stickers(
 ) -> Any:
     stickers_list: Sequence[Stickers] = await get_all_stickers_from_db(db)
     return templates.TemplateResponse(
-        "stickers.html", {"request": request, "stickers": stickers_list}
+        "templates/stickers.html", {"request": request, "stickers": stickers_list}
     )
 
 
