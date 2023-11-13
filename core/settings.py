@@ -1,8 +1,13 @@
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
+from fastapi.templating import Jinja2Templates
 
 # env configs:
 load_dotenv()
+# template_manager.py
+
+
+templates = Jinja2Templates(directory="./core/views")
 
 
 class Settings(BaseSettings):
@@ -16,4 +21,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
