@@ -2,7 +2,13 @@
 module.exports = {
 	content: ['./core/**/*.{html,js}'],
 	theme: {
-		extend: {},
+		variants: {
+			extend: {
+				backgroundColor: ['hover'],
+				textColor: ['hover'],
+				// Add other variants as needed
+			},
+		},
 	},
 	plugins: [],
 }
