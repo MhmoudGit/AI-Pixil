@@ -1,6 +1,6 @@
 from typing import Any, Sequence
 
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy import Column
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_session
@@ -23,9 +23,13 @@ router = APIRouter(
 
 @router.get("/sticker-form", response_class=HTMLResponse)
 async def sticker_form(request: Request):
-    return templates.TemplateResponse(
-        "templates/generateStk.html", {"request": request}
-    )
+    user = request.session.get("user")
+    if user:
+        return templates.TemplateResponse(
+            "templates/generateStk.html", {"request": request}
+        )
+    else:
+        return RedirectResponse(url="/")
 
 
 @router.post("/generate_sticker")

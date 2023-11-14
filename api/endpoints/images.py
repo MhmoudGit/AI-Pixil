@@ -1,4 +1,4 @@
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi import APIRouter, Depends, Form, Request, Response
 from core.services.query import Query, get_all_images_from_db, get_single_image_from_db
 from core.models.images import Images
@@ -14,6 +14,17 @@ router = APIRouter(
     prefix="",
     tags=["Images"],
 )
+
+
+@router.get("/image-form", response_class=HTMLResponse)
+async def image_form(request: Request):
+    user = request.session.get("user")
+    if user:
+        return templates.TemplateResponse(
+            "templates/generateImg.html", {"request": request}
+        )
+    else:
+        return RedirectResponse(url="/")
 
 
 @router.post("/generat-image")
@@ -51,10 +62,3 @@ async def image(
 ) -> Any:
     image: Images = await get_single_image_from_db(id, db)
     return image
-
-
-@router.get("/image-form", response_class=HTMLResponse)
-async def image_form(request: Request):
-    return templates.TemplateResponse(
-        "templates/generateImg.html", {"request": request}
-    )

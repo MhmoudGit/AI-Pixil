@@ -1,7 +1,7 @@
 from fastapi import Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from fastapi.routing import APIRouter
-from core.settings import settings
+from core.settings import settings, templates
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
 
@@ -26,14 +26,20 @@ oauth.register(
 
 @router.get("/in")
 def public(request: Request):
+    return RedirectResponse(url="/")
+
+
+@router.get("/check_user")
+def check_user(request: Request):
     user = request.session.get("user")
-    if user:
+    if user is not None:
         name = user.get("name")
-        img = user.get("picture")
-        return HTMLResponse(
-            f"<p>Hello {name}!</p> <img src={img} /><a href=/logout>Logout</a>"
+        return templates.TemplateResponse(
+            "templates/auth.html", {"request": request, "name": name}
         )
-    return HTMLResponse("<a href=/login>Login</a>")
+    return templates.TemplateResponse(
+        "templates/auth.html", {"request": request, "name": None}
+    )
 
 
 @router.get("/login")
@@ -59,4 +65,4 @@ async def auth(request: Request):
 @router.get("/logout")
 async def logout(request: Request):
     request.session.pop("user", None)
-    return RedirectResponse(url="/in")
+    return RedirectResponse(url="/")
