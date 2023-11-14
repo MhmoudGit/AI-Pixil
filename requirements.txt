@@ -3,11 +3,14 @@ anyio==3.7.1
 async-timeout==4.0.3
 asyncpg==0.29.0
 attrs==23.1.0
+Authlib==1.2.1
 certifi==2023.7.22
+cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 coloredlogs==15.0.1
+cryptography==41.0.5
 dnspython==2.4.2
 email-validator==2.1.0.post1
 fastapi==0.104.1
@@ -39,10 +42,12 @@ Pillow==10.0.1
 platformdirs==4.0.0
 pooch==1.8.0
 protobuf==4.25.0
+pycparser==2.21
 pydantic==2.4.2
 pydantic-extra-types==2.1.0
 pydantic-settings==2.0.3
 pydantic_core==2.10.1
+PyJWT==2.8.0
 PyMatting==1.1.11
 pyreadline3==3.4.1
 python-dotenv==1.0.0

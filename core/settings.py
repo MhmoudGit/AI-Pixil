@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     db_password: str
     db_hostname: str
     db_name: str
-
+    google_client_id: str
+    google_client_secret: str
+    google_redirect_uri: str
+    secret_key: str
 
 settings = Settings()
