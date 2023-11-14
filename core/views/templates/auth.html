@@ -1,5 +1,8 @@
 {% if name is not none %}
-<div class="flex">
+<div class="flex gap-2 items-center">
+	<select name="drobdown" id="dropdown">
+		
+	</select>
 	<p
 		class="md:px-4 hover:text-slate-200 cursor-pointer"
 		hx-get="/image-form"
@@ -16,13 +19,17 @@
 	>
 		Create Sticker
 	</p>
-	<p>Hello {{ name }}</p>
-	<a href="/logout">Logout</a>
+	<p class="flex justify-center items-center gap-2">
+		<img src="{{ image }}" alt="google image" width="30" class="rounded-full" />
+		{{ name }}
+	</p>
+	<a href="/logout" class="bg-red-600 rounded-md px-1">Logout</a>
 </div>
 {% else %}
-<button
-	class="px-4 py-2 border flex justify-center items-center gap-2 border-slate-200 rounded-lg text-slate-200 hover:text-slate-200"
+<a
+	class="px-4 py-2 border flex justify-center items-center hover:bg-white gap-2 border-slate-200 rounded-lg hover:text-slate-950"
 	id="google"
+	href="/login"
 >
 	<img
 		width="15"
@@ -30,6 +37,6 @@
 		loading="lazy"
 		alt="google logo"
 	/>
-	<span>Login with Google</span>
-</button>
+	<span class="hidden md:block">Login with Google</span>
+</a>
 {% endif %}

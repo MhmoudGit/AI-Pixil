@@ -34,8 +34,9 @@ def check_user(request: Request):
     user = request.session.get("user")
     if user is not None:
         name = user.get("name")
+        image = user.get("picture")
         return templates.TemplateResponse(
-            "templates/auth.html", {"request": request, "name": name}
+            "templates/auth.html", {"request": request, "name": name, "image": image}
         )
     return templates.TemplateResponse(
         "templates/auth.html", {"request": request, "name": None}
