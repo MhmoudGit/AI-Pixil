@@ -5,10 +5,12 @@ from core.models.images import Images
 from core.schemas.images import Image
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_session
+from core.services.user import trial
 from core.settings import settings, templates
 import io
 from typing import Any, Sequence
 from sqlalchemy import Column
+
 
 router = APIRouter(
     prefix="",
@@ -33,6 +35,13 @@ async def generate_image(
     prompt: str = Form(...),
     db: AsyncSession = Depends(get_session),
 ) -> Any:
+    user = request.session.get("user")
+    if user is not None:
+        email: str = user.get("email")
+        tries: int = await trial(email, db)
+    if tries <= 0:
+        html_content: str = f"""<p> {tries} Tries Left -- Subscribe for more  </p>"""
+        return HTMLResponse(content=html_content, status_code=200)
     query = Query(settings.api_url, settings.api_token, prompt)
     res: Response = await query.get_image()
     image = io.BytesIO(res.content)
@@ -40,7 +49,8 @@ async def generate_image(
     id: Column[int] = await query.save_to_db(db)
     image: Images = await get_single_image_from_db(id, db)
     return templates.TemplateResponse(
-        "templates/singleImage.html", {"request": request, "image": image}
+        "templates/singleImage.html",
+        {"request": request, "image": image, "tries": tries},
     )
 
 

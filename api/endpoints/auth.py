@@ -1,9 +1,13 @@
-from fastapi import Request
+from fastapi import Depends, Request
 from fastapi.responses import RedirectResponse
 from fastapi.routing import APIRouter
+from core.database import get_session
+from core.services.user import new_user
 from core.settings import settings, templates
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
+from sqlalchemy.ext.asyncio import AsyncSession
+
 
 router = APIRouter(
     prefix="",
@@ -52,7 +56,10 @@ async def login(request: Request):
 
 
 @router.get("/auth")
-async def auth(request: Request):
+async def auth(
+    request: Request,
+    db: AsyncSession = Depends(get_session),
+):
     try:
         access_token = await oauth.google.authorize_access_token(request)
     except OAuthError:
@@ -60,6 +67,7 @@ async def auth(request: Request):
     # return access_token
     user_data = access_token["userinfo"]
     request.session["user"] = dict(user_data)
+    await new_user(user_data.email, db)
     return RedirectResponse(url="/in")
 
 

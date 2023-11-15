@@ -2,7 +2,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_session
 from fastapi import APIRouter, Depends
-from core.services.counter import count_views, get_views, update_views
+from core.services.counter import get_views, update_views
 
 router = APIRouter(
     prefix="",
