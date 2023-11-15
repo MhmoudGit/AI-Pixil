@@ -2,7 +2,7 @@ from fastapi import Depends, Request
 from fastapi.responses import RedirectResponse
 from fastapi.routing import APIRouter
 from core.database import get_session
-from core.services.user import new_user
+from core.services.user import get_user_by_email, new_user
 from core.settings import settings, templates
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
@@ -59,7 +59,7 @@ async def login(request: Request):
 async def auth(
     request: Request,
     db: AsyncSession = Depends(get_session),
-):
+) -> RedirectResponse:
     try:
         access_token = await oauth.google.authorize_access_token(request)
     except OAuthError:
@@ -67,7 +67,9 @@ async def auth(
     # return access_token
     user_data = access_token["userinfo"]
     request.session["user"] = dict(user_data)
-    await new_user(user_data.email, db)
+    user = await get_user_by_email(user_data.email, db)
+    if not user:
+        await new_user(user_data.email, db)
     return RedirectResponse(url="/in")
 
 

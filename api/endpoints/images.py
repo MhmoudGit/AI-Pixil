@@ -42,16 +42,20 @@ async def generate_image(
     if tries <= 0:
         html_content: str = f"""<p> {tries} Tries Left -- Subscribe for more  </p>"""
         return HTMLResponse(content=html_content, status_code=200)
-    query = Query(settings.api_url, settings.api_token, prompt)
-    res: Response = await query.get_image()
-    image = io.BytesIO(res.content)
-    await query.save_image(image)
-    id: Column[int] = await query.save_to_db(db)
-    image: Images = await get_single_image_from_db(id, db)
-    return templates.TemplateResponse(
-        "templates/singleImage.html",
-        {"request": request, "image": image, "tries": tries},
-    )
+    try:
+        query = Query(settings.api_url, settings.api_token, prompt)
+        res: Response = await query.get_image()
+        image = io.BytesIO(res.content)
+        await query.save_image(image)
+        id: Column[int] = await query.save_to_db(db)
+        image: Images = await get_single_image_from_db(id, db)
+        return templates.TemplateResponse(
+            "templates/singleImage.html",
+            {"request": request, "image": image, "tries": tries},
+        )
+    except Exception:
+        html_content: str = """<p> Something went wrong... try again!  </p>"""
+        return HTMLResponse(content=html_content, status_code=200)
 
 
 @router.get("/images", response_model=list[Image])
