@@ -14,7 +14,7 @@ DATABASE_URL: str = f"postgresql+asyncpg://{settings.db_username}:{settings.db_p
 
 engine: AsyncEngine = create_async_engine(
     DATABASE_URL,
-    echo=False,
+    echo=True,
 )
 
 async_session = sessionmaker(
